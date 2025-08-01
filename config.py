@@ -1,7 +1,10 @@
 import json
 
+
 class Config:
-    sonos = {"refresh_token": "", "household_id": "", "client_id":"", "client_secret":"","favorite_player":""}
+    wireless_network = {"SSID": "ssid", "hostname": "Sonos4Kids", "password": "yourpasswordhere"}
+    sonos = {"refresh_token": "", "household_id": "", "client_id": "", "client_secret": "", "favorite_player": ""}
+    disco_text = ""
     _configFile = "config.json"
 
     def save():

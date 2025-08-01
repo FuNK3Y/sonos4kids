@@ -4,6 +4,7 @@ import sys
 
 from control import Control
 
+
 class ButtonControl(Control):
     def __init__(self, pin, debounce=0.05):
         self._downCounter = 0
@@ -23,36 +24,39 @@ class ButtonControl(Control):
             elif self.pin.value() == 0:
                 self._downCounter += 1
             await asyncio.sleep(self.debounce)
-            
+
     async def action(self):
         print(f"Button {self.pin} pressed")
-    
+
     async def update(self):
         pass
+
 
 class RedButton(ButtonControl):
     def __init__(self, pin, controller, debounce=0.05):
         super().__init__(pin, debounce)
-        self.controller=controller
+        self.controller = controller
 
     async def action(self):
         await super().action()
         await self.controller.skip_to_previous_track()
-        
+
+
 class BlueButton(ButtonControl):
     def __init__(self, pin, controller, debounce=0.05):
         super().__init__(pin, debounce)
-        self.controller=controller
+        self.controller = controller
 
     async def action(self):
         await super().action()
         await self.controller.skip_to_next_track()
-        
+
+
 class ScreenButton(ButtonControl):
     def __init__(self, pin, controller, favorite, debounce=0.05):
         super().__init__(pin, debounce)
-        self.controller=controller
-        self.favorite=favorite
+        self.controller = controller
+        self.favorite = favorite
 
     async def action(self):
         await super().action()

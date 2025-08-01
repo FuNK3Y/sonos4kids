@@ -4,14 +4,17 @@ import random
 
 from control import Control
 
+
 class DisplayControl(Control):
-    def __init__(self, controller, lcd):
+    def __init__(self, controller, lcd, disco_text):
         super().__init__(controller)
-        self._last_text=None
-        self._last_image_url=None
+        self._last_text = None
+        self._last_image_url = None
         self.locked = False
+        self.disco_text = disco_text
         self.lcd = lcd
         self.lcd.setBrightness(64)
+
     async def update(self, error=False, dirty=False):
         if self.locked:
             return
@@ -25,30 +28,67 @@ class DisplayControl(Control):
                     data = await response.read()
             self.lcd.clear(0)
             scale = 0.2 if "spotify" in current_image_url or "i.scdn.co" in current_image_url else 0.42
-            self.lcd.drawImage(data,0,0,0,0,0,0,scale)
+            self.lcd.drawImage(data, 0, 0, 0, 0, 0, 0, scale)
             self.lcd.setCursor(0, 120)
             self.lcd.print(self.remove_accents(current_item)[:20])
-            
+
     def remove_accents(self, text):
         replacements = {
             # Lowercase
-            'á': 'a', 'à': 'a', 'â': 'a', 'ä': 'a', 'ã': 'a', 'å': 'a',
-            'ç': 'c',
-            'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
-            'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
-            'ñ': 'n',
-            'ó': 'o', 'ò': 'o', 'ô': 'o', 'ö': 'o', 'õ': 'o',
-            'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
-            'ý': 'y', 'ÿ': 'y',
+            "á": "a",
+            "à": "a",
+            "â": "a",
+            "ä": "a",
+            "ã": "a",
+            "å": "a",
+            "ç": "c",
+            "é": "e",
+            "è": "e",
+            "ê": "e",
+            "ë": "e",
+            "í": "i",
+            "ì": "i",
+            "î": "i",
+            "ï": "i",
+            "ñ": "n",
+            "ó": "o",
+            "ò": "o",
+            "ô": "o",
+            "ö": "o",
+            "õ": "o",
+            "ú": "u",
+            "ù": "u",
+            "û": "u",
+            "ü": "u",
+            "ý": "y",
+            "ÿ": "y",
             # Uppercase
-            'Á': 'A', 'À': 'A', 'Â': 'A', 'Ä': 'A', 'Ã': 'A', 'Å': 'A',
-            'Ç': 'C',
-            'É': 'E', 'È': 'E', 'Ê': 'E', 'Ë': 'E',
-            'Í': 'I', 'Ì': 'I', 'Î': 'I', 'Ï': 'I',
-            'Ñ': 'N',
-            'Ó': 'O', 'Ò': 'O', 'Ô': 'O', 'Ö': 'O', 'Õ': 'O',
-            'Ú': 'U', 'Ù': 'U', 'Û': 'U', 'Ü': 'U',
-            'Ý': 'Y'
+            "Á": "A",
+            "À": "A",
+            "Â": "A",
+            "Ä": "A",
+            "Ã": "A",
+            "Å": "A",
+            "Ç": "C",
+            "É": "E",
+            "È": "E",
+            "Ê": "E",
+            "Ë": "E",
+            "Í": "I",
+            "Ì": "I",
+            "Î": "I",
+            "Ï": "I",
+            "Ñ": "N",
+            "Ó": "O",
+            "Ò": "O",
+            "Ô": "O",
+            "Ö": "O",
+            "Õ": "O",
+            "Ú": "U",
+            "Ù": "U",
+            "Û": "U",
+            "Ü": "U",
+            "Ý": "Y",
         }
         for accented, plain in replacements.items():
             text = text.replace(accented, plain)
@@ -61,7 +101,7 @@ class DisplayControl(Control):
             try:
                 action = random.choice(["rect", "ellipse", "text"])
                 color = random.getrandbits(24)
-                w = random.randint(10,height // 2)
+                w = random.randint(10, height // 2)
                 h = random.randint(10, width // 2)
                 x = random.randint(0, width)
                 y = random.randint(0, height)
@@ -71,7 +111,7 @@ class DisplayControl(Control):
                     self.lcd.fillEllipse(x, y, w, h, color)
                 else:
                     self.lcd.setCursor(x, y)
-                    self.lcd.print("Caroline", color)
+                    self.lcd.print(self.disco_text, color)
                 await asyncio.sleep(0.5)
             except asyncio.CancelledError:
                 await self.update(dirty=True)

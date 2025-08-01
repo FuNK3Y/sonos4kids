@@ -4,10 +4,12 @@ import sys
 from control import Control
 from unit import ScrollUnit
 
+
 class FavoriteControl(Control):
     PAGE_SIZE = 8
     LINE_HEIGHT = 16
     LED_COLOR = 0x33FF33
+
     def __init__(self, i2c, controller, display, pollrate=0.1):
         self.controller = controller
         self.display = display
@@ -39,7 +41,7 @@ class FavoriteControl(Control):
             except Exception as e:
                 print("Uncaught exception in FavoriteControl poll:", e)
                 sys.print_exception(e)
-    
+
     async def action(self):
         print(f"Scroll button pressed")
         await self.controller.load_favorite(favorite_id=self.selected_favorite["id"])
@@ -60,11 +62,18 @@ class FavoriteControl(Control):
 
         for row, idx in enumerate(range(start, end)):
             self.display.lcd.setCursor(0, row * self.LINE_HEIGHT)
-            self.display.lcd.print(self.display.remove_accents(f'{self.controller.favorites[idx]["name"]} [{self.controller.favorites[idx]["service"]["name"]}]'[:20]), 0xE86100 if idx == selected_index else 0xFFFFFF)
+            self.display.lcd.print(
+                self.display.remove_accents(
+                    f'{self.controller.favorites[idx]["name"]} [{self.controller.favorites[idx]["service"]["name"]}]'[
+                        :20
+                    ]
+                ),
+                0xE86100 if idx == selected_index else 0xFFFFFF,
+            )
 
     def refresh_started(self):
         self.scroll_unit.fill_color(0x0000FF)
-                                    
+
     def refresh_finished(self):
         self.scroll_unit.fill_color(self.LED_COLOR)
 

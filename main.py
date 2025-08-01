@@ -4,7 +4,7 @@ import time
 import gc
 import machine
 
-from machine import I2C,Pin
+from machine import I2C, Pin
 from unit import ScrollUnit
 from M5 import Lcd
 from config import Config
@@ -17,7 +17,7 @@ from button_control import *
 
 Lcd.setRotation(2)
 Lcd.clear()
-Lcd.setCursor(0,0)
+Lcd.setCursor(0, 0)
 Lcd.print("Starting\r\n")
 
 Config.load()
@@ -31,14 +31,15 @@ while not wlan.isconnected():
     wlan.connect(Config.wireless_network["SSID"], Config.wireless_network["password"])
     time.sleep(10)
 
+
 async def main():
     Lcd.print("Main loop starting\r\n")
     controller = Controller()
-    display = DisplayControl(controller, Lcd)
+    display = DisplayControl(controller, Lcd, Config.disco_text)
     i2c = I2C(0, scl=Pin(39), sda=Pin(38), freq=100000)
     favorite = FavoriteControl(i2c, controller, display)
     controller.controls.append(display)
-    controller.controls.append(VolumeControl(controller,(8, 7), 0.5))
+    controller.controls.append(VolumeControl(controller, (8, 7), 0.5))
     controller.controls.append(RedButton(5, controller))
     controller.controls.append(BlueButton(6, controller))
     controller.controls.append(ScreenButton(41, controller, favorite))
@@ -46,7 +47,7 @@ async def main():
     controller.controls.append(favorite)
     await controller.connect()
     await controller.initialize_group()
-    
+
     while True:
         print("### Refresh ###")
         print(f"{gc.mem_free()=}")
@@ -55,7 +56,6 @@ async def main():
         await controller.refresh()
         favorite.refresh_finished()
         await asyncio.sleep(10)
-    
-    await controller.disconnect()
+
 
 asyncio.run(main())
