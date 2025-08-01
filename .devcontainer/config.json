@@ -1,0 +1,1 @@
+{"wireless_network": {"SSID": "ssid", "hostname": "Sonos4Kids", "password": "your_password"}, "sonos": {"refresh_token": "refresh_token", "household_id": "household_id", "client_secret": "client_secret", "client_id": "client_id", "favorite_player": "some_speaker"}}
