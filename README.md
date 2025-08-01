@@ -9,3 +9,6 @@ It uses the [Sonos Control API](https://docs.sonos.com/reference/about-control-a
 - Favorite selection through https://shop.m5stack.com/products/byte-button-unit-with-8x-buttons-stm32g031
 - Next/Previous track through https://shop.m5stack.com/products/mini-dual-button-unit
 - Controlled through https://shop.m5stack.com/products/atoms3r-dev-kit
+
+## Result
+![Sonos4Kids Device](/photos/sonos4kids.jpg)
