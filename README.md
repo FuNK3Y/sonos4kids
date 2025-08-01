@@ -11,7 +11,7 @@ It uses the [Sonos Control API](https://docs.sonos.com/reference/about-control-a
 - Controlled through https://shop.m5stack.com/products/atoms3r-dev-kit
 
 ## Hardware
-A bunch of lego and a powerbank to supply the controller and stich everything together. The m5stack tailgate is too weak to power the whole thing more than a few minutes sadly.
+On top you would need a bunch of lego and a powerbank to supply the controller and stich everything together. The m5stack tailgate is too weak to power the whole thing more than a few minutes sadly.
 
 ## Result
 ![Sonos4Kids Device](/photos/sonos4kids.jpg)
