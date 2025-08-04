@@ -43,7 +43,6 @@ class PlayerControl(Control):
                 await self.controller.modify_group_members(player_ids_to_remove=player_ids)
             else:
                 await self.controller.modify_group_members(player_ids_to_add=player_ids)
-            await self.update()
 
     async def update(self):
         for index, status in enumerate(self.active_players_index()):

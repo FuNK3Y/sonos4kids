@@ -45,10 +45,8 @@ class FavoriteControl(Control):
     async def action(self):
         print(f"Scroll button pressed")
         await self.controller.load_favorite(favorite_id=self.selected_favorite["id"])
-        await self.controller.get_metadata_status()
         self.display.locked = False
         self.selected_favorite = None
-        await self.display.update(dirty=True)
 
     async def update_display(self, selected_index):
         if not self.controller.favorites:
@@ -63,11 +61,7 @@ class FavoriteControl(Control):
         for row, idx in enumerate(range(start, end)):
             self.display.lcd.setCursor(0, row * self.LINE_HEIGHT)
             self.display.lcd.print(
-                self.display.remove_accents(
-                    f'{self.controller.favorites[idx]["name"]} [{self.controller.favorites[idx]["service"]["name"]}]'[
-                        :20
-                    ]
-                ),
+                self.display.remove_accents(f'{self.controller.favorites[idx]["name"]} [{self.controller.favorites[idx]["service"]["name"]}]'[:20]),
                 0xE86100 if idx == selected_index else 0xFFFFFF,
             )
 

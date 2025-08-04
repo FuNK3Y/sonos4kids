@@ -43,7 +43,6 @@ class VolumeControl(Control):
                 if volume != self.current_volume:
                     await self.controller.set_group_volume(volume * 100 * self.volume_ceiling)
                     print(f"Volume changed: {volume}")
-                    self.set_color((7, 14), volume, True)
                 self.current_volume = volume
             await asyncio.sleep(self.pollrate)
 

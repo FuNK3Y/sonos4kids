@@ -72,6 +72,7 @@ class Controller:
     async def set_group_volume(self, volume):
         data = await self._request("POST", f"groups/{self.group}/groupVolume", payload={"volume": volume})
         self.volume = volume
+        await self.notify()
         return data
 
     async def get_playback_status(self):
@@ -106,12 +107,14 @@ class Controller:
 
     async def skip_to_next_track(self):
         data = await self._request("POST", f"groups/{self.group}/playback/skipToNextTrack")
-        await self.refresh()
+        await self.get_metadata_status()
+        await self.notify()
         return data
 
     async def skip_to_previous_track(self):
         data = await self._request("POST", f"groups/{self.group}/playback/skipToPreviousTrack")
-        await self.refresh()
+        await self.get_metadata_status()
+        await self.notify()
         return data
 
     async def get_favorites(self):
@@ -126,6 +129,8 @@ class Controller:
             "playOnCompletion": play_on_completion,
         }
         data = await self._request("POST", f"groups/{self.group}/favorites", payload=payload)
+        await self.get_metadata_status()
+        await self.notify()
         return data
 
     async def modify_group_members(self, player_ids_to_add=[], player_ids_to_remove=[]):
@@ -135,6 +140,8 @@ class Controller:
         }
         data = await self._request("POST", f"groups/{self.group}/groups/modifyGroupMembers", payload=payload)
         self.player_ids = data["group"]["playerIds"]
+        await self.get_group_volume()
+        await self.notify()
         return data
 
     async def notify(self):
